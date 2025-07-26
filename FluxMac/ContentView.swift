@@ -66,7 +66,7 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             SidebarView(selectedTab: $selectedTab)
-        } content: {
+        } detail: {
             switch selectedTab {
             case "generate":
                 GenerationView()
@@ -81,15 +81,8 @@ struct ContentView: View {
             default:
                 GenerationView()
             }
-        } detail: {
-            // Detail view for selected items
-            if selectedTab == "gallery" {
-                ImageDetailView()
-            } else {
-                EmptyView()
-            }
         }
-        .navigationSplitViewStyle(.balanced)
+        .navigationSplitViewStyle(.prominentDetail)
         .navigationSplitViewColumnWidth(min: 200, ideal: 250, max: 300)
         .background(DesignSystem.Colors.background)
         .toolbar {
@@ -271,6 +264,8 @@ struct SectionHeader: View {
             .padding(.bottom, DesignSystem.Spacing.xs)
     }
 }
+
+
 
 struct StatusCard: View {
     @EnvironmentObject var generationService: GenerationService
@@ -834,19 +829,4 @@ struct AddPresetView: View {
     }
 }
 
-struct ImageDetailView: View {
-    var body: some View {
-        VStack {
-            Text("Image Details")
-                .font(.title)
-                .padding()
-            
-            Spacer()
-            
-            Text("Select an image from the gallery to view details")
-                .foregroundColor(.secondary)
-            
-            Spacer()
-        }
-    }
-} 
+ 
