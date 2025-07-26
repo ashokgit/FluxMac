@@ -1,0 +1,29 @@
+name: FluxMac
+options:
+  bundleIdPrefix: com.fluxmac
+  deploymentTarget:
+    macOS: "13.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+
+targets:
+  FluxMac:
+    type: application
+    platform: macOS
+    sources:
+      - FluxMac
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.fluxmac.app
+        SWIFT_VERSION: 5.0
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        ENABLE_PREVIEWS: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        DEVELOPMENT_ASSET_PATHS: "\"FluxMac/Preview Content\""
+        CODE_SIGN_STYLE: Automatic
+        COMBINE_HIDPI_IMAGES: YES
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1" 

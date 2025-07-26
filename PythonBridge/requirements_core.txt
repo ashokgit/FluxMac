@@ -1,0 +1,27 @@
+# Core requirements for MFLUX Mac App
+# Essential dependencies for real AI image generation
+
+# Real MFLUX for AI image generation
+mflux>=0.9.6
+
+# Core MLX (Apple Silicon optimized)  
+mlx>=0.19.0
+
+# Image processing
+Pillow>=10.0.0
+
+# Basic utilities
+requests>=2.31.0
+
+# Numerical computing (required by MFLUX)
+numpy>=1.24.0
+
+# Transformers and model support
+transformers>=4.30.0
+huggingface-hub>=0.16.0
+
+# SentencePiece - required by T5Tokenizer and other transformer models
+sentencepiece>=0.1.99
+
+# Note: This provides real AI image generation capabilities
+# No more placeholder images! 

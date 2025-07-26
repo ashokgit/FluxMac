@@ -1,0 +1,44 @@
+# macOS
+.DS_Store
+
+# Xcode
+## Build generated
+build/
+DerivedData/
+
+## User-specific files
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcshareddata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+
+# Swift Package Manager
+.build/
+Packages/
+XCFrameworkIntermediates/
+
+# Python
+## Virtual Environments
+.venv
+venv
+ENV
+/PythonBridge/venv/
+
+## Compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# Documentation
+Documentation/*.md
+!Documentation/UserGuide.md 
