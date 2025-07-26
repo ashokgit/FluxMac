@@ -1,5 +1,63 @@
 import SwiftUI
 
+// MARK: - Design System
+struct DesignSystem {
+    // Colors - Now properly supporting dark mode
+    struct Colors {
+        static let primary = Color.blue
+        static let secondary = Color.secondary
+        static let accent = Color.purple
+        
+        // Adaptive backgrounds
+        static let background = Color(NSColor.windowBackgroundColor)
+        static let surface = Color(NSColor.controlBackgroundColor)
+        static let surfaceSecondary = Color(NSColor.separatorColor).opacity(0.1)
+        static let cardBackground = Color(NSColor.controlBackgroundColor)
+        
+        // Adaptive text colors
+        static let text = Color(NSColor.labelColor)
+        static let textSecondary = Color(NSColor.secondaryLabelColor)
+        static let textTertiary = Color(NSColor.tertiaryLabelColor)
+        
+        // Semantic colors
+        static let success = Color.green
+        static let warning = Color.orange
+        static let error = Color.red
+        
+        // Borders and separators
+        static let border = Color(NSColor.separatorColor)
+        static let borderSecondary = Color(NSColor.separatorColor).opacity(0.5)
+    }
+    
+    // Typography
+    struct Typography {
+        static let largeTitle = Font.system(.largeTitle, design: .rounded, weight: .bold)
+        static let title = Font.system(.title, design: .rounded, weight: .semibold)
+        static let title2 = Font.system(.title2, design: .rounded, weight: .medium)
+        static let headline = Font.system(.headline, design: .rounded, weight: .medium)
+        static let body = Font.system(.body, design: .default)
+        static let caption = Font.system(.caption, design: .default)
+        static let caption2 = Font.system(.caption2, design: .default)
+    }
+    
+    // Spacing
+    struct Spacing {
+        static let xs: CGFloat = 4
+        static let sm: CGFloat = 8
+        static let md: CGFloat = 16
+        static let lg: CGFloat = 24
+        static let xl: CGFloat = 32
+        static let xxl: CGFloat = 48
+    }
+    
+    // Corner Radius
+    struct CornerRadius {
+        static let small: CGFloat = 6
+        static let medium: CGFloat = 12
+        static let large: CGFloat = 20
+    }
+}
+
 struct ContentView: View {
     @State private var selectedTab = "generate"
     @EnvironmentObject var modelManager: ModelManager
@@ -32,18 +90,23 @@ struct ContentView: View {
             }
         }
         .navigationSplitViewStyle(.balanced)
+        .navigationSplitViewColumnWidth(min: 200, ideal: 250, max: 300)
+        .background(DesignSystem.Colors.background)
         .toolbar {
             ToolbarItem(placement: .navigation) {
                 Button(action: toggleSidebar) {
                     Image(systemName: "sidebar.left")
+                        .font(.system(size: 16, weight: .medium))
                 }
+                .buttonStyle(ModernToolbarButtonStyle())
             }
             
             ToolbarItem(placement: .primaryAction) {
                 Button("Generate") {
-                    // Trigger generation from toolbar
+                    selectedTab = "generate"
                 }
                 .keyboardShortcut("g", modifiers: [.command])
+                .buttonStyle(PrimaryToolbarButtonStyle())
             }
         }
     }
@@ -59,60 +122,240 @@ struct SidebarView: View {
     @EnvironmentObject var generationService: GenerationService
     
     var body: some View {
-        List(selection: $selectedTab) {
-            Section("Main") {
-                NavigationLink(value: "generate") {
-                    Label("Generate", systemImage: "wand.and.stars")
+        VStack(spacing: 0) {
+            // Header
+            VStack(spacing: DesignSystem.Spacing.md) {
+                HStack {
+                    Image(systemName: "wand.and.stars.inverse")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [DesignSystem.Colors.primary, DesignSystem.Colors.accent],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("MFLUX")
+                            .font(DesignSystem.Typography.title2)
+                            .foregroundColor(DesignSystem.Colors.text)
+                        
+                        Text("AI Image Generator")
+                            .font(DesignSystem.Typography.caption)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                    }
+                    
+                    Spacer()
                 }
-                
-                NavigationLink(value: "gallery") {
-                    Label("Gallery", systemImage: "photo.on.rectangle")
-                }
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.top, DesignSystem.Spacing.lg)
             }
             
-            Section("Management") {
-                NavigationLink(value: "models") {
-                    Label("Models", systemImage: "cpu")
+            // Navigation
+            List(selection: $selectedTab) {
+                Section {
+                    SidebarNavItem(
+                        id: "generate",
+                        icon: "wand.and.stars",
+                        title: "Generate",
+                        subtitle: "Create new images",
+                        isSelected: selectedTab == "generate"
+                    )
+                    
+                    SidebarNavItem(
+                        id: "gallery",
+                        icon: "photo.on.rectangle",
+                        title: "Gallery",
+                        subtitle: "View your creations",
+                        isSelected: selectedTab == "gallery"
+                    )
+                } header: {
+                    SectionHeader(title: "Main")
                 }
                 
-                NavigationLink(value: "presets") {
-                    Label("Presets", systemImage: "bookmark")
+                Section {
+                    SidebarNavItem(
+                        id: "models",
+                        icon: "cpu",
+                        title: "Models",
+                        subtitle: "Manage AI models",
+                        isSelected: selectedTab == "models"
+                    )
+                    
+                    SidebarNavItem(
+                        id: "presets",
+                        icon: "bookmark",
+                        title: "Presets",
+                        subtitle: "Saved configurations",
+                        isSelected: selectedTab == "presets"
+                    )
+                } header: {
+                    SectionHeader(title: "Management")
+                }
+                
+                Section {
+                    SidebarNavItem(
+                        id: "settings",
+                        icon: "gear",
+                        title: "Settings",
+                        subtitle: "App preferences",
+                        isSelected: selectedTab == "settings"
+                    )
+                } header: {
+                    SectionHeader(title: "System")
                 }
             }
+            .listStyle(SidebarListStyle())
+            .scrollContentBackground(.hidden)
             
-            Section("System") {
-                NavigationLink(value: "settings") {
-                    Label("Settings", systemImage: "gear")
-                }
-            }
+            Spacer()
+            
+            // Status Card
+            StatusCard()
+                .padding(DesignSystem.Spacing.md)
         }
-        .listStyle(SidebarListStyle())
-        .navigationTitle("MFLUX")
-        
-        // Status bar at bottom
-        VStack {
-            Divider()
-            HStack {
+        .background(DesignSystem.Colors.surface)
+    }
+}
+
+struct SidebarNavItem: View {
+    let id: String
+    let icon: String
+    let title: String
+    let subtitle: String
+    let isSelected: Bool
+    
+    var body: some View {
+        NavigationLink(value: id) {
+            HStack(spacing: DesignSystem.Spacing.md) {
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(isSelected ? DesignSystem.Colors.primary : DesignSystem.Colors.textSecondary)
+                    .frame(width: 24, height: 24)
+                
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Status")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    Text(generationService.isGenerating ? "Generating..." : "Ready")
-                        .font(.caption)
-                        .foregroundColor(generationService.isGenerating ? .orange : .green)
+                    Text(title)
+                        .font(DesignSystem.Typography.body)
+                        .fontWeight(.medium)
+                        .foregroundColor(isSelected ? DesignSystem.Colors.primary : DesignSystem.Colors.text)
+                    
+                    Text(subtitle)
+                        .font(DesignSystem.Typography.caption2)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
                 }
                 
                 Spacer()
-                
-                if generationService.isGenerating {
-                    ProgressView()
-                        .scaleEffect(0.8)
-                }
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.vertical, DesignSystem.Spacing.sm)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .background(
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
+                    .fill(isSelected ? DesignSystem.Colors.primary.opacity(0.1) : Color.clear)
+            )
         }
-        .background(Color(NSColor.controlBackgroundColor))
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct SectionHeader: View {
+    let title: String
+    
+    var body: some View {
+        Text(title.uppercased())
+            .font(DesignSystem.Typography.caption2)
+            .fontWeight(.semibold)
+            .foregroundColor(DesignSystem.Colors.textSecondary)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.top, DesignSystem.Spacing.lg)
+            .padding(.bottom, DesignSystem.Spacing.xs)
+    }
+}
+
+struct StatusCard: View {
+    @EnvironmentObject var generationService: GenerationService
+    
+    var body: some View {
+        VStack(spacing: DesignSystem.Spacing.sm) {
+            HStack {
+                Image(systemName: generationService.isGenerating ? "gear" : "checkmark.circle.fill")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(generationService.isGenerating ? DesignSystem.Colors.warning : DesignSystem.Colors.success)
+                    .rotationEffect(.degrees(generationService.isGenerating ? 360 : 0))
+                    .animation(
+                        generationService.isGenerating ? 
+                            Animation.linear(duration: 2).repeatForever(autoreverses: false) : 
+                            Animation.default,
+                        value: generationService.isGenerating
+                    )
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("System Status")
+                        .font(DesignSystem.Typography.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(DesignSystem.Colors.text)
+                    
+                    Text(generationService.isGenerating ? "Generating..." : "Ready")
+                        .font(DesignSystem.Typography.caption2)
+                        .foregroundColor(generationService.isGenerating ? DesignSystem.Colors.warning : DesignSystem.Colors.success)
+                }
+                
+                Spacer()
+            }
+            
+            if generationService.isGenerating {
+                ProgressView()
+                    .progressViewStyle(LinearProgressViewStyle(tint: DesignSystem.Colors.primary))
+                    .scaleEffect(y: 0.5)
+            }
+        }
+        .padding(DesignSystem.Spacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
+                .fill(DesignSystem.Colors.cardBackground)
+                .overlay(
+                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
+                        .stroke(DesignSystem.Colors.borderSecondary, lineWidth: 1)
+                )
+        )
+    }
+}
+
+// MARK: - Button Styles
+struct ModernToolbarButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(DesignSystem.Colors.text)
+            .padding(DesignSystem.Spacing.sm)
+            .background(
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                    .fill(configuration.isPressed ? DesignSystem.Colors.surface : Color.clear)
+            )
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
+struct PrimaryToolbarButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(DesignSystem.Typography.body)
+            .fontWeight(.medium)
+            .foregroundColor(.white)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.vertical, DesignSystem.Spacing.sm)
+            .background(
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                    .fill(
+                        LinearGradient(
+                            colors: [DesignSystem.Colors.primary, DesignSystem.Colors.accent],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+            )
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
     }
 }
 
