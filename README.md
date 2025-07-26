@@ -18,38 +18,19 @@ This project is provided under a custom license. Please see the [LICENSE](LICENS
 - 🎯 **No Command Line Required**: Intuitive GUI for non-technical users
 - ⚡ **High Performance**: Direct integration with MFLUX for maximum speed
 
-## System Requirements
-
-- **macOS**: 12.0 (Monterey) or later
-- **Hardware**: Apple Silicon Mac (M1/M2/M3/M4)
-- **Memory**: 16GB RAM minimum (32GB+ recommended)
-- **Storage**: 50GB+ available space for models and cache
-
 ## Quick Start
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-repo/FluxMac.git
-   cd FluxMac
-   ```
+1.  **Run the setup script**:
+    ```bash
+    ./setup_dev.sh
+    ```
+    This will install all necessary dependencies and set up the development environment.
 
-2. **Install dependencies**:
-   ```bash
-   # Install Python dependencies
-   pip install -r requirements.txt
-   
-   # Install Swift dependencies (if using SPM)
-   # Dependencies are managed through Xcode
-   ```
-
-3. **Open in Xcode**:
-   ```bash
-   open FluxMac.xcodeproj
-   ```
-
-4. **Build and Run**:
-   - Select your target device (Mac)
-   - Press Cmd+R to build and run
+2.  **Run the development script**:
+    ```bash
+    ./run_dev.sh
+    ```
+    This will build and launch the application.
 
 ## Project Structure
 

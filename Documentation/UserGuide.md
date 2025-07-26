@@ -290,4 +290,38 @@ Each generated image includes:
 
 ---
 
-For more information, visit our website or join our community Discord server. 
+For more information, visit our website or join our community Discord server.
+
+---
+
+## For Developers
+
+### Building from Source
+
+If you want to build the MFLUX Mac App from source, follow these steps:
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/your-repo/FluxMac.git
+    cd FluxMac
+    ```
+
+2.  **Run the setup script**:
+    ```bash
+    ./setup_dev.sh
+    ```
+    This will install all necessary dependencies and set up the development environment.
+
+3.  **Run the development script**:
+    ```bash
+    ./run_dev.sh
+    ```
+    This will build and launch the application.
+
+### Project Structure
+
+*   **FluxMac/**: The main Swift application source code.
+*   **PythonBridge/**: The Python code that interfaces with the MFLUX library.
+*   **Documentation/**: User and developer documentation.
+*   **Models/**: Directory where AI models are stored.
+*   **Images/**: Directory where generated images are saved. 
