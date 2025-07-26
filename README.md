@@ -2,6 +2,8 @@
 
 A native macOS application that provides a user-friendly interface for MFLUX, an MLX-based FLUX image generation tool optimized for Apple Silicon Macs.
 
+![FluxMac Screenshot](Images/Screenshot%202025-07-27%20at%2000.54.40.png)
+
 ## License
 
 This project is provided under a custom license. Please see the [LICENSE](LICENSE) file for details.
